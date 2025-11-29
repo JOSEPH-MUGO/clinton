@@ -140,22 +140,9 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
-        <div style={{ 
-          marginTop: '25px', 
-          padding: '15px', 
-          backgroundColor: '#f8f9fa', 
-          borderRadius: '6px',
-          fontSize: '12px',
-          color: '#666',
-          textAlign: 'center'
-        }}>
-          <strong>Demo Credentials:</strong><br/>
-          Admin: admin / admin123<br/>
-          User: user1 / user123
-        </div>
+        
       </div>
     </div>
   );
 };
-
 export default Login;

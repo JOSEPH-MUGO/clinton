@@ -16,7 +16,10 @@ export interface Document {
   filePath?: string; // Supabase storage path
   fileUrl?: string;  // Public URL for file access
   fileData?: string; // Base64 encoded file data for local storage
-  storageType?: 'local' | 'supabase'; // Track storage method
+  storageType?: 'local' | 'supabase' | 'asset'; // Track storage method
+  isAssetFile?: boolean; // Flag for pre-loaded asset files
+  compressed?: boolean; // Flag for compressed files
+  originalFileSize?: number; // Original file size before compression
 }  export interface AuthState {
     user: User | null;
     isAuthenticated: boolean;
