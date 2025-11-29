@@ -29,16 +29,11 @@ const Login: React.FC = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div style={{
-=======
-    <div style={{ 
->>>>>>> 8af3ea37ef47faedd52e47079ff0496b771d014e
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
-<<<<<<< HEAD
       width: '100vw',
       margin: 0,
       padding: '20px',
@@ -56,74 +51,25 @@ const Login: React.FC = () => {
         borderRadius: '12px',
         boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
       }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              marginTop: '5px',
-              boxSizing: 'border-box'
-            }}
-          />
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              marginTop: '5px',
-              boxSizing: 'border-box'
-            }}
-          />
-        </div>
-        {error && (
-          <div style={{ color: 'red', marginBottom: '15px' }}>
-            {error}
-          </div>
-        )}
-        <button 
-          type="submit"
-          style={{
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
+        <h2 style={{ 
+          textAlign: 'center', 
+          marginBottom: '30px',
+          color: '#333',
+          fontSize: '24px',
+          fontWeight: '600'
+        }}>
           Login
-        </button>
-      </form>
-=======
-      backgroundColor: '#f5f5f5'
-    }}>
-      <div style={{ 
-        maxWidth: '400px', 
-        width: '100%',
-        padding: '30px',
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        backgroundColor: 'white',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-      }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
+        </h2>
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '15px' }}>
-            <label>Username:</label>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '5px',
+              fontWeight: '500',
+              color: '#555'
+            }}>
+              Username:
+            </label>
             <input
               type="text"
               value={username}
@@ -131,16 +77,23 @@ const Login: React.FC = () => {
               required
               style={{ 
                 width: '100%', 
-                padding: '10px', 
-                marginTop: '5px',
+                padding: '12px', 
+                border: '1px solid #ddd',
+                borderRadius: '6px',
                 boxSizing: 'border-box',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
+                fontSize: '14px'
               }}
             />
           </div>
-          <div style={{ marginBottom: '15px' }}>
-            <label>Password:</label>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '5px',
+              fontWeight: '500',
+              color: '#555'
+            }}>
+              Password:
+            </label>
             <input
               type="password"
               value={password}
@@ -148,23 +101,24 @@ const Login: React.FC = () => {
               required
               style={{ 
                 width: '100%', 
-                padding: '10px', 
-                marginTop: '5px',
+                padding: '12px', 
+                border: '1px solid #ddd',
+                borderRadius: '6px',
                 boxSizing: 'border-box',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
+                fontSize: '14px'
               }}
             />
           </div>
           {error && (
             <div style={{ 
               color: 'red', 
-              marginBottom: '15px',
-              padding: '10px',
+              marginBottom: '20px',
+              padding: '12px',
               backgroundColor: '#ffe6e6',
               border: '1px solid #ffcccc',
-              borderRadius: '4px',
-              textAlign: 'center'
+              borderRadius: '6px',
+              textAlign: 'center',
+              fontSize: '14px'
             }}>
               {error}
             </div>
@@ -177,16 +131,28 @@ const Login: React.FC = () => {
               backgroundColor: '#007bff',
               color: 'white',
               border: 'none',
-              borderRadius: '4px',
+              borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '16px',
-              fontWeight: 'bold'
+              fontWeight: '600'
             }}
           >
             Login
           </button>
         </form>
->>>>>>> 8af3ea37ef47faedd52e47079ff0496b771d014e
+        <div style={{ 
+          marginTop: '25px', 
+          padding: '15px', 
+          backgroundColor: '#f8f9fa', 
+          borderRadius: '6px',
+          fontSize: '12px',
+          color: '#666',
+          textAlign: 'center'
+        }}>
+          <strong>Demo Credentials:</strong><br/>
+          Admin: admin / admin123<br/>
+          User: user1 / user123
+        </div>
       </div>
     </div>
   );
