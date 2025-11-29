@@ -29,13 +29,28 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      maxWidth: '400px', 
-      margin: '100px auto', 
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      width: '100vw',
+      margin: 0,
       padding: '20px',
-      border: '1px solid #ddd',
-      borderRadius: '8px'
+      backgroundColor: '#f5f5f5',
+      position: 'fixed',
+      top: 0,
+      left: 0
     }}>
+      <div style={{ 
+        width: '100%',
+        maxWidth: '400px', 
+        padding: '40px',
+        backgroundColor: 'white',
+        border: '1px solid #ddd',
+        borderRadius: '12px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+      }}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
@@ -88,6 +103,7 @@ const Login: React.FC = () => {
           Login
         </button>
       </form>
+      </div>
     </div>
   );
 };
