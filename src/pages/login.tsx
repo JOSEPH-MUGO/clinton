@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { users } from '../data/mokedData';
+import { users } from "../data/mokedData";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -29,11 +29,16 @@ const Login: React.FC = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div style={{
+=======
+    <div style={{ 
+>>>>>>> 8af3ea37ef47faedd52e47079ff0496b771d014e
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
+<<<<<<< HEAD
       width: '100vw',
       margin: 0,
       padding: '20px',
@@ -103,6 +108,85 @@ const Login: React.FC = () => {
           Login
         </button>
       </form>
+=======
+      backgroundColor: '#f5f5f5'
+    }}>
+      <div style={{ 
+        maxWidth: '400px', 
+        width: '100%',
+        padding: '30px',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        backgroundColor: 'white',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}>
+        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '15px' }}>
+            <label>Username:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              style={{ 
+                width: '100%', 
+                padding: '10px', 
+                marginTop: '5px',
+                boxSizing: 'border-box',
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: '15px' }}>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{ 
+                width: '100%', 
+                padding: '10px', 
+                marginTop: '5px',
+                boxSizing: 'border-box',
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+            />
+          </div>
+          {error && (
+            <div style={{ 
+              color: 'red', 
+              marginBottom: '15px',
+              padding: '10px',
+              backgroundColor: '#ffe6e6',
+              border: '1px solid #ffcccc',
+              borderRadius: '4px',
+              textAlign: 'center'
+            }}>
+              {error}
+            </div>
+          )}
+          <button 
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 'bold'
+            }}
+          >
+            Login
+          </button>
+        </form>
+>>>>>>> 8af3ea37ef47faedd52e47079ff0496b771d014e
       </div>
     </div>
   );
