@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { users } from '../data/mockedData';
+import { users } from '../data/mokedData';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
