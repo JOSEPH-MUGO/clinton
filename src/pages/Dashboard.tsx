@@ -111,35 +111,42 @@ const Dashboard: React.FC = () => {
           padding: "0 20px",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center"
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "10px"
         }}>
           {/* Logo and Title */}
-          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "15px", minWidth: "0" }}>
             <img 
               src={logoImage} 
               alt="Logo" 
               style={{ 
-                width: "40px", 
-                height: "40px", 
+                width: window.innerWidth <= 768 ? "32px" : "40px", 
+                height: window.innerWidth <= 768 ? "32px" : "40px", 
                 borderRadius: "8px",
                 objectFit: "cover",
-                border: "2px solid rgba(255,255,255,0.2)"
+                border: "2px solid rgba(255,255,255,0.2)",
+                flexShrink: 0
               }}
             />
-            <div>
+            <div style={{ minWidth: "0" }}>
               <h2 style={{ 
                 margin: 0, 
-                fontSize: "24px", 
+                fontSize: window.innerWidth <= 768 ? "18px" : "24px", 
                 fontWeight: "600",
-                letterSpacing: "-0.025em"
+                letterSpacing: "-0.025em",
+                whiteSpace: window.innerWidth <= 480 ? "nowrap" : "normal",
+                overflow: "hidden",
+                textOverflow: "ellipsis"
               }}>
                 Document Hub
               </h2>
               <p style={{ 
                 margin: 0, 
-                fontSize: "14px", 
+                fontSize: window.innerWidth <= 768 ? "12px" : "14px", 
                 opacity: 0.8,
-                fontWeight: "300"
+                fontWeight: "300",
+                display: window.innerWidth <= 480 ? "none" : "block"
               }}>
                 Your Document Management System
               </p>
@@ -147,46 +154,52 @@ const Dashboard: React.FC = () => {
           </div>
           
           {/* User Info and Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: window.innerWidth <= 768 ? "10px" : "20px", flexShrink: 0 }}>
             <div style={{ 
               display: "flex", 
               alignItems: "center", 
               gap: "10px",
-              padding: "8px 16px",
+              padding: window.innerWidth <= 768 ? "6px 12px" : "8px 16px",
               backgroundColor: "rgba(255,255,255,0.1)",
               borderRadius: "25px",
               backdropFilter: "blur(10px)"
             }}>
               <div style={{
-                width: "32px",
-                height: "32px",
+                width: window.innerWidth <= 768 ? "28px" : "32px",
+                height: window.innerWidth <= 768 ? "28px" : "32px",
                 borderRadius: "50%",
                 backgroundColor: "rgba(255,255,255,0.2)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "14px",
+                fontSize: window.innerWidth <= 768 ? "12px" : "14px",
                 fontWeight: "600"
               }}>
                 {(user.username || 'U').charAt(0).toUpperCase()}
               </div>
-              <span style={{ fontSize: "14px", fontWeight: "500" }}>
+              <span style={{ 
+                fontSize: window.innerWidth <= 768 ? "12px" : "14px", 
+                fontWeight: "500",
+                display: window.innerWidth <= 480 ? "none" : "inline"
+              }}>
                 Welcome, {user.username || 'User'}
               </span>
             </div>
             <button 
               onClick={handleLogout}
               style={{
-                padding: "10px 20px",
+                padding: window.innerWidth <= 768 ? "8px 15px" : "10px 20px",
                 backgroundColor: "rgba(255,255,255,0.1)",
                 color: "white",
                 border: "1px solid rgba(255,255,255,0.3)",
                 borderRadius: "25px",
                 cursor: "pointer",
-                fontSize: "14px",
+                fontSize: window.innerWidth <= 768 ? "12px" : "14px",
                 fontWeight: "500",
                 transition: "all 0.3s ease",
-                backdropFilter: "blur(10px)"
+                backdropFilter: "blur(10px)",
+                minWidth: window.innerWidth <= 480 ? "auto" : "auto",
+                whiteSpace: "nowrap"
               }}
               onMouseOver={(e) => {
                 (e.target as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.2)";
@@ -197,7 +210,7 @@ const Dashboard: React.FC = () => {
                 (e.target as HTMLElement).style.transform = "translateY(0)";
               }}
             >
-              Sign Out
+              {window.innerWidth <= 480 ? "Out" : "Sign Out"}
             </button>
           </div>
         </div>
@@ -207,13 +220,13 @@ const Dashboard: React.FC = () => {
       <div style={{
         maxWidth: "1200px",
         margin: "0 auto",
-        padding: "30px 20px"
+        padding: window.innerWidth <= 768 ? "20px 10px" : "30px 20px"
       }}>
         {/* Hero Section */}
         <div style={{
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
           borderRadius: "16px",
-          padding: "40px 30px",
+          padding: window.innerWidth <= 768 ? "30px 20px" : "40px 30px",
           color: "white",
           marginBottom: "30px",
           position: "relative",
@@ -232,15 +245,17 @@ const Dashboard: React.FC = () => {
           <div style={{ position: "relative", zIndex: 2 }}>
             <h1 style={{ 
               margin: "0 0 10px 0", 
-              fontSize: "32px", 
-              fontWeight: "700" 
+              fontSize: window.innerWidth <= 768 ? "24px" : "32px", 
+              fontWeight: "700",
+              lineHeight: "1.2"
             }}>
               Welcome to Your Document Library
             </h1>
             <p style={{ 
               margin: "0 0 20px 0", 
-              fontSize: "18px", 
-              opacity: "0.9" 
+              fontSize: window.innerWidth <= 768 ? "16px" : "18px", 
+              opacity: "0.9",
+              lineHeight: "1.4"
             }}>
               Access and manage your documents with ease
             </p>
@@ -265,16 +280,16 @@ const Dashboard: React.FC = () => {
       {/* Documents Table */}
       <div style={{
         backgroundColor: "white",
-        margin: "0 20px 20px 20px",
+        margin: window.innerWidth <= 768 ? "0 10px 20px 10px" : "0 20px 20px 20px",
         borderRadius: "4px",
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
       }}>
-        {/* Table Header */}
+        {/* Table Header - Hide on mobile, show as cards instead */}
         <div style={{
           backgroundColor: "#8B4B8A",
           color: "white",
           padding: "12px 0",
-          display: "grid",
+          display: window.innerWidth <= 768 ? "none" : "grid",
           gridTemplateColumns: "1fr 200px 150px",
           gap: "15px",
           alignItems: "center",
@@ -306,35 +321,48 @@ const Dashboard: React.FC = () => {
             <div
               key={doc.id}
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 200px 150px",
+                display: window.innerWidth <= 768 ? "block" : "grid",
+                gridTemplateColumns: window.innerWidth <= 768 ? "none" : "1fr 200px 150px",
                 gap: "15px",
-                padding: "12px 15px",
+                padding: window.innerWidth <= 768 ? "20px 15px" : "12px 15px",
                 borderBottom: index < filteredDocuments.length - 1 ? "1px solid #eee" : "none",
                 alignItems: "center",
                 backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
-                fontSize: "14px"
+                fontSize: "14px",
+                border: window.innerWidth <= 768 ? "1px solid #eee" : "none",
+                margin: window.innerWidth <= 768 ? "10px" : "0",
+                borderRadius: window.innerWidth <= 768 ? "8px" : "0"
               }}
             >
-              <div>
-                <div style={{ fontWeight: "bold", color: "#333" }}>
+              <div style={{ marginBottom: window.innerWidth <= 768 ? "15px" : "0" }}>
+                <div style={{ fontWeight: "bold", color: "#333", fontSize: window.innerWidth <= 768 ? "16px" : "14px" }}>
                   {doc.title}
                 </div>
                 {doc.fileName && (
-                  <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
+                  <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
                     📎 {doc.fileName}
                   </div>
                 )}
-                <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
+                <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
                   {doc.storageType === 'supabase' ? "☁️ Cloud Storage" : 
                    doc.storageType === 'local' ? "💾 Local Storage" : 
                    "📝 Manual Entry"}
                 </div>
+                {window.innerWidth <= 768 && (
+                  <div style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>
+                    <strong>Date:</strong> {formatDate(doc.createdAt)}
+                  </div>
+                )}
               </div>
-              <div style={{ color: "#666" }}>
-                {formatDate(doc.createdAt)}
-              </div>
-              <div style={{ textAlign: "center" }}>
+              {window.innerWidth > 768 && (
+                <div style={{ color: "#666" }}>
+                  {formatDate(doc.createdAt)}
+                </div>
+              )}
+              <div style={{ 
+                textAlign: window.innerWidth <= 768 ? "left" : "center",
+                marginTop: window.innerWidth <= 768 ? "10px" : "0"
+              }}>
                 {(doc.fileUrl || doc.fileData) ? (
                   <button
                     onClick={() => handleViewDocument(doc)}

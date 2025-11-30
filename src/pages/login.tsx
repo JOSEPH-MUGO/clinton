@@ -45,11 +45,12 @@ const Login: React.FC = () => {
       <div style={{ 
         width: '100%',
         maxWidth: '400px', 
-        padding: '40px',
+        padding: window.innerWidth <= 480 ? '30px 20px' : '40px',
         backgroundColor: 'white',
         border: '1px solid #ddd',
         borderRadius: '12px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+        margin: window.innerWidth <= 480 ? '0 10px' : '0'
       }}>
         <h2 style={{ 
           textAlign: 'center', 
@@ -81,7 +82,12 @@ const Login: React.FC = () => {
                 border: '1px solid #ddd',
                 borderRadius: '6px',
                 boxSizing: 'border-box',
-                fontSize: '14px'
+                fontSize: '16px',
+                backgroundColor: '#ffffff',
+                color: '#333333',
+                outline: 'none',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
             />
           </div>
@@ -105,7 +111,12 @@ const Login: React.FC = () => {
                 border: '1px solid #ddd',
                 borderRadius: '6px',
                 boxSizing: 'border-box',
-                fontSize: '14px'
+                fontSize: '16px',
+                backgroundColor: '#ffffff',
+                color: '#333333',
+                outline: 'none',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
             />
           </div>
