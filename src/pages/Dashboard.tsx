@@ -7,6 +7,19 @@ const Dashboard: React.FC = () => {
   const [selectedDoc, setSelectedDoc] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [documents, setDocuments] = useState<any[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Load documents from localStorage on component mount and listen for changes
   useEffect(() => {
@@ -443,11 +456,11 @@ const Dashboard: React.FC = () => {
         }}>
           <div style={{
             backgroundColor: 'white',
-            borderRadius: window.innerWidth <= 768 ? '0' : '8px',
-            width: window.innerWidth <= 768 ? '100%' : '90%',
-            maxWidth: window.innerWidth <= 768 ? '100%' : '800px',
-            height: window.innerWidth <= 768 ? '100vh' : 'auto',
-            maxHeight: window.innerWidth <= 768 ? '100vh' : '90%',
+            borderRadius: isMobile ? '0' : '8px',
+            width: isMobile ? '100%' : '90%',
+            maxWidth: isMobile ? '100%' : '800px',
+            height: isMobile ? '100vh' : 'auto',
+            maxHeight: isMobile ? '100vh' : '90%',
             overflow: 'auto',
             position: 'relative'
           }}>
@@ -495,14 +508,14 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Document Content - Simplified and Mobile Optimized */}
+            {/* Document Content - Mobile Optimized */}
             <div style={{ padding: '0' }}>
               {(() => {
-                const isMobile = window.innerWidth <= 768;
                 const contentHeight = isMobile ? 'calc(100vh - 140px)' : '70vh';
                 
                 // Debug logging
-                console.log('Document details:', {
+                console.log('Document viewer - Mobile:', isMobile, 'Document:', {
+                  title: selectedDoc.title,
                   fileName: selectedDoc.fileName,
                   fileType: selectedDoc.fileType,
                   hasFileUrl: !!selectedDoc.fileUrl,
@@ -510,100 +523,120 @@ const Dashboard: React.FC = () => {
                   storageType: selectedDoc.storageType
                 });
                 
-                // Check for PDF content
-                const isPDF = selectedDoc.fileType === 'application/pdf' || 
-                             selectedDoc.fileName?.toLowerCase().endsWith('.pdf');
-                
-                // Check for image content
-                const isImage = selectedDoc.fileType?.includes('image') || 
-                               /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(selectedDoc.fileName || '');
-                
-                if (isPDF) {
-                  // PDF handling - mobile-friendly
-                  const pdfSrc = selectedDoc.fileUrl || selectedDoc.fileData;
+                // For mobile, always show a simple interface
+                if (isMobile) {
                   return (
-                    <div style={{ height: contentHeight, width: '100%', position: 'relative' }}>
-                      {isMobile ? (
-                        // Mobile: Show link to open PDF instead of iframe for better compatibility
+                    <div style={{
+                      padding: '30px 20px',
+                      textAlign: 'center',
+                      backgroundColor: '#f8f9fa',
+                      height: contentHeight,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
+                      <div style={{ fontSize: '48px', marginBottom: '20px' }}>
+                        {selectedDoc.fileName?.toLowerCase().endsWith('.pdf') || selectedDoc.fileType === 'application/pdf' ? '📄' : 
+                         selectedDoc.fileType?.includes('image') ? '🖼️' : '📝'}
+                      </div>
+                      <h3 style={{ marginBottom: '15px', color: '#333', fontSize: '18px' }}>
+                        {selectedDoc.title}
+                      </h3>
+                      
+                      {/* Always show content if available */}
+                      {selectedDoc.content && (
                         <div style={{
-                          padding: '40px 20px',
-                          textAlign: 'center',
-                          backgroundColor: '#f8f9fa',
-                          height: '100%',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          alignItems: 'center'
+                          backgroundColor: '#fff',
+                          padding: '20px',
+                          borderRadius: '8px',
+                          marginBottom: '20px',
+                          maxHeight: '200px',
+                          overflow: 'auto',
+                          width: '100%',
+                          textAlign: 'left',
+                          fontSize: '14px',
+                          lineHeight: '1.5',
+                          color: '#333'
                         }}>
-                          <div style={{ fontSize: '48px', marginBottom: '20px' }}>📄</div>
-                          <h3 style={{ marginBottom: '20px', color: '#333' }}>PDF Document</h3>
-                          <p style={{ marginBottom: '30px', color: '#666', textAlign: 'center' }}>
-                            PDF documents are best viewed in a dedicated PDF viewer on mobile devices.
-                          </p>
+                          {selectedDoc.content}
+                        </div>
+                      )}
+                      
+                      {/* File actions */}
+                      <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {(selectedDoc.fileUrl || selectedDoc.fileData) && (
                           <button
-                            onClick={() => window.open(pdfSrc, '_blank')}
+                            onClick={() => {
+                              const fileToOpen = selectedDoc.fileUrl || selectedDoc.fileData;
+                              window.open(fileToOpen, '_blank');
+                            }}
                             style={{
-                              padding: '15px 30px',
+                              padding: '12px 24px',
                               backgroundColor: '#007bff',
                               color: 'white',
                               border: 'none',
                               borderRadius: '8px',
                               cursor: 'pointer',
-                              fontSize: '16px',
+                              fontSize: '14px',
                               fontWeight: '600'
                             }}
                           >
-                            📖 Open PDF
+                            {selectedDoc.fileName?.toLowerCase().endsWith('.pdf') || selectedDoc.fileType === 'application/pdf' 
+                              ? '📖 Open PDF' 
+                              : selectedDoc.fileType?.includes('image') 
+                                ? '🖼️ View Image' 
+                                : '📄 Open File'
+                            }
                           </button>
-                        </div>
-                      ) : (
-                        // Desktop: Use iframe
-                        <>
-                          <iframe
-                            src={pdfSrc}
+                        )}
+                        
+                        {(selectedDoc.fileUrl || selectedDoc.fileData) && (
+                          <button
+                            onClick={() => downloadFile(selectedDoc)}
                             style={{
-                              width: '100%',
-                              height: '100%',
-                              border: 'none'
+                              padding: '12px 24px',
+                              backgroundColor: '#28a745',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '8px',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              fontWeight: '600'
                             }}
-                            title={selectedDoc.title}
-                            onError={() => {
-                              console.error('PDF iframe failed to load:', pdfSrc);
-                            }}
-                          />
-                          <div style={{
-                            position: 'absolute',
-                            top: '10px',
-                            right: '10px',
-                            zIndex: 10
-                          }}>
-                            <button
-                              onClick={() => window.open(pdfSrc, '_blank')}
-                              style={{
-                                padding: '8px 12px',
-                                backgroundColor: '#007bff',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '12px'
-                              }}
-                            >
-                              🔗 Open in New Tab
-                            </button>
-                          </div>
-                        </>
-                      )}
+                          >
+                            📥 Download
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
+                
+                // Desktop rendering
+                const isPDF = selectedDoc.fileType === 'application/pdf' || 
+                             selectedDoc.fileName?.toLowerCase().endsWith('.pdf');
+                const isImage = selectedDoc.fileType?.includes('image') || 
+                               /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(selectedDoc.fileName || '');
+                
+                if (isPDF) {
+                  const pdfSrc = selectedDoc.fileUrl || selectedDoc.fileData;
+                  return (
+                    <div style={{ height: contentHeight, width: '100%', position: 'relative' }}>
+                      <iframe
+                        src={pdfSrc}
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                        title={selectedDoc.title}
+                      />
                     </div>
                   );
                 } else if (isImage) {
-                  // Image handling
                   const imageSrc = selectedDoc.fileUrl || selectedDoc.fileData;
                   return (
                     <div style={{ 
                       textAlign: 'center',
                       backgroundColor: '#000',
-                      padding: isMobile ? '10px' : '20px',
+                      padding: '20px',
                       height: contentHeight,
                       display: 'flex',
                       alignItems: 'center',
@@ -612,22 +645,14 @@ const Dashboard: React.FC = () => {
                       <img 
                         src={imageSrc} 
                         alt={selectedDoc.title}
-                        style={{ 
-                          maxWidth: '100%', 
-                          maxHeight: '100%',
-                          objectFit: 'contain'
-                        }}
-                        onError={() => {
-                          console.error('Image failed to load:', imageSrc);
-                        }}
+                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                       />
                     </div>
                   );
                 } else {
-                  // Text content
                   return (
                     <div style={{
-                      padding: isMobile ? '20px 15px' : '30px',
+                      padding: '30px',
                       backgroundColor: '#fff',
                       height: contentHeight,
                       overflow: 'auto'
@@ -635,10 +660,9 @@ const Dashboard: React.FC = () => {
                       <div style={{
                         whiteSpace: 'pre-wrap',
                         fontFamily: 'Georgia, serif',
-                        fontSize: isMobile ? '14px' : '16px',
+                        fontSize: '16px',
                         lineHeight: '1.6',
-                        color: '#333',
-                        letterSpacing: '0.3px'
+                        color: '#333'
                       }}>
                         {selectedDoc.content || 'No content available for this document.'}
                       </div>
