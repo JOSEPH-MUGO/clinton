@@ -10,7 +10,7 @@ export let users: User[] = [
   {
     id: '2',
     username: 'user1',
-    password: 'user123',
+    password: 'user@2025.',
     role: 'user'
   }
 ];
