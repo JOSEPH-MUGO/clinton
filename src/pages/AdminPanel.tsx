@@ -34,13 +34,13 @@ const AdminPanel: React.FC = () => {
     addDocument({
       title: fileName,
       content: fileContent || 'File uploaded successfully',
+      createdAt: new Date().toISOString().split('T')[0],
       fileName: fileName,
       fileType: 'text/plain',
       fileSize: 0,
       filePath: `/${fileName}`,
       fileUrl: `/${fileName}`,
-      storageType: 'local',
-      createdAt: new Date().toISOString().split('T')[0]
+      storageType: 'local'
     });
     
     setFileName('');
@@ -279,7 +279,7 @@ const AdminPanel: React.FC = () => {
             display: 'grid',
             gap: '15px'
           }}>
-            {documents.map((doc: Document) => (
+            {documents.map((doc) => (
               <div
                 key={doc.id}
                 style={{
