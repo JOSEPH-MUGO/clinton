@@ -563,50 +563,191 @@ const Dashboard: React.FC = () => {
                         </div>
                       )}
                       
-                      {/* File actions */}
-                      <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        {(selectedDoc.fileUrl || selectedDoc.fileData) && (
+                      {/* Try View in Modal option */}
+                      {(selectedDoc.fileUrl || selectedDoc.fileData) && (
+                        <div style={{
+                          backgroundColor: '#fff3cd',
+                          padding: '15px',
+                          borderRadius: '8px',
+                          marginBottom: '20px',
+                          width: '100%',
+                          textAlign: 'center',
+                          fontSize: '13px',
+                          color: '#856404',
+                          border: '1px solid #ffeaa7'
+                        }}>
                           <button
                             onClick={() => {
+                              // Create an inline viewer
+                              const viewerDiv = document.createElement('div');
+                              viewerDiv.style.cssText = `
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: rgba(0,0,0,0.9);
+                                z-index: 10000;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                              `;
+                              
+                              const closeBtn = document.createElement('button');
+                              closeBtn.innerHTML = '✕';
+                              closeBtn.style.cssText = `
+                                position: absolute;
+                                top: 20px;
+                                right: 20px;
+                                background: #fff;
+                                border: none;
+                                padding: 10px 15px;
+                                border-radius: 50%;
+                                cursor: pointer;
+                                font-size: 16px;
+                                z-index: 10001;
+                              `;
+                              closeBtn.onclick = () => document.body.removeChild(viewerDiv);
+                              
                               const fileToOpen = selectedDoc.fileUrl || selectedDoc.fileData;
-                              window.open(fileToOpen, '_blank');
+                              const iframe = document.createElement('iframe');
+                              iframe.src = fileToOpen;
+                              iframe.style.cssText = `
+                                width: 95%;
+                                height: 95%;
+                                border: none;
+                                background: white;
+                                border-radius: 8px;
+                              `;
+                              
+                              viewerDiv.appendChild(closeBtn);
+                              viewerDiv.appendChild(iframe);
+                              document.body.appendChild(viewerDiv);
                             }}
                             style={{
-                              padding: '12px 24px',
-                              backgroundColor: '#007bff',
-                              color: 'white',
+                              padding: '8px 16px',
+                              backgroundColor: '#ffc107',
+                              color: '#856404',
                               border: 'none',
-                              borderRadius: '8px',
+                              borderRadius: '4px',
                               cursor: 'pointer',
-                              fontSize: '14px',
+                              fontSize: '12px',
                               fontWeight: '600'
                             }}
                           >
-                            {selectedDoc.fileName?.toLowerCase().endsWith('.pdf') || selectedDoc.fileType === 'application/pdf' 
-                              ? '📖 Open PDF' 
-                              : selectedDoc.fileType?.includes('image') 
-                                ? '🖼️ View Image' 
-                                : '📄 Open File'
-                            }
+                            🔍 Try View in Modal
                           </button>
-                        )}
-                        
+                          <div style={{ marginTop: '8px', fontSize: '11px' }}>
+                            Alternative viewer - may load faster on some devices
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* File actions */}
+                      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
                         {(selectedDoc.fileUrl || selectedDoc.fileData) && (
-                          <button
-                            onClick={() => downloadFile(selectedDoc)}
-                            style={{
-                              padding: '12px 24px',
-                              backgroundColor: '#28a745',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                              fontSize: '14px',
-                              fontWeight: '600'
-                            }}
-                          >
-                            📥 Download
-                          </button>
+                          <>
+                            {/* Quick View Button */}
+                            <button
+                              onClick={() => {
+                                const fileToOpen = selectedDoc.fileUrl || selectedDoc.fileData;
+                                window.open(fileToOpen, '_blank');
+                              }}
+                              style={{
+                                padding: '10px 18px',
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '13px',
+                                fontWeight: '600'
+                              }}
+                            >
+                              🔗 Quick View
+                            </button>
+                            
+                            {/* Open With Button */}
+                            <button
+                              onClick={() => {
+                                const fileToOpen = selectedDoc.fileUrl || selectedDoc.fileData;
+                                
+                                // Create a temporary link element for better browser handling
+                                const link = document.createElement('a');
+                                link.href = fileToOpen;
+                                link.target = '_blank';
+                                link.rel = 'noopener noreferrer';
+                                
+                                // Add download attribute for PDFs to give users more control
+                                if (selectedDoc.fileName?.toLowerCase().endsWith('.pdf') || selectedDoc.fileType === 'application/pdf') {
+                                  link.download = selectedDoc.fileName || selectedDoc.title + '.pdf';
+                                }
+                                
+                                // Trigger the link
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                              }}
+                              style={{
+                                padding: '10px 18px',
+                                backgroundColor: '#17a2b8',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '13px',
+                                fontWeight: '600'
+                              }}
+                            >
+                              📱 Open With...
+                            </button>
+                            
+                            {/* Download Button */}
+                            <button
+                              onClick={() => downloadFile(selectedDoc)}
+                              style={{
+                                padding: '10px 18px',
+                                backgroundColor: '#28a745',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '13px',
+                                fontWeight: '600'
+                              }}
+                            >
+                              📥 Download
+                            </button>
+                            
+                            {/* Share Button (if supported) */}
+                            {navigator.share && (
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    await navigator.share({
+                                      title: selectedDoc.title,
+                                      text: `Check out this document: ${selectedDoc.title}`,
+                                      url: selectedDoc.fileUrl || window.location.href
+                                    });
+                                  } catch (err) {
+                                    console.log('Sharing not supported or cancelled');
+                                  }
+                                }}
+                                style={{
+                                  padding: '10px 18px',
+                                  backgroundColor: '#6c757d',
+                                  color: 'white',
+                                  border: 'none',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontSize: '13px',
+                                  fontWeight: '600'
+                                }}
+                              >
+                                📤 Share
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>
