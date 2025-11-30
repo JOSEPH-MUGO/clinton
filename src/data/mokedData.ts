@@ -28,7 +28,7 @@ const defaultDocuments: Document[] = [
     fileUrl: '/Certificate  Final - Joseph Nkiria Emmanuel.pdf',
     storageType: 'asset',
     isAssetFile: true,
-    createdAt: '2007-07-24'
+    createdAt: '2014-12-21'
   }
 ];
 
