@@ -9,8 +9,8 @@ export let users: User[] = [
   },
   {
     id: '2',
-    username: 'user1',
-    password: 'user@2025.',
+    username: 'joseph',
+    password: 'jnr@2025.',
     role: 'user'
   }
 ];
